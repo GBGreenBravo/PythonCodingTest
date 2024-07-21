@@ -16,7 +16,7 @@ for _ in range(4):
 
     left = (rectangles[0], rectangles[2])
     right = (rectangles[4], rectangles[6])
-    if rectangles[4] < rectangles[0] or (rectangles[0] == rectangles[4] and rectangles[6] < rectangles[2]):
+    if rectangles[4] < rectangles[0]: # or (rectangles[0] == rectangles[4] and rectangles[6] < rectangles[2]) 시작점 같으면 어느쪽이 left/right 돼도 비교 결과에 영향 없으므로 생략 가능.
         left, right = right, left
 
     if left[1] < right[0]:
@@ -28,7 +28,7 @@ for _ in range(4):
 
     down = (rectangles[1], rectangles[3])
     up = (rectangles[5], rectangles[7])
-    if rectangles[5] < rectangles[1] or (rectangles[1] == rectangles[5] and rectangles[7] < rectangles[3]):
+    if rectangles[5] < rectangles[1]:
         down, up = up, down
 
     if down[1] < up[0]:
