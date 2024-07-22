@@ -1,3 +1,5 @@
+# 20240722
+
 for test_case in range(1, 11):
     width = int(input())
     buildings = list(map(int, input().split()))
