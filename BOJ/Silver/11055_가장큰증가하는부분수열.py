@@ -1,0 +1,14 @@
+# 20240724
+# 36:25
+
+n = int(input())
+arr = list(map(int, input().split()))
+arr.reverse()
+mx_lst = [0] * n
+for i in range(n):
+    tmp_mx = 0
+    for j in range(i):
+        if arr[j] > arr[i]:
+            tmp_mx = max(tmp_mx, mx_lst[j])
+    mx_lst[i] = arr[i] + tmp_mx
+print(max(mx_lst))
