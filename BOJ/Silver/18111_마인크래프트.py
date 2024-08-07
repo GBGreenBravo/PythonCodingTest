@@ -1,3 +1,37 @@
+# 20240807
+# 17:27
+# 1 / 1
+
+n, m, inven = map(int, input().split())
+grounds = [list(map(int, input().split())) for _ in range(n)]
+
+height = 0
+answer_sec, answer_height = 500 * 500 * 2 * 256, 0  # 정답으로 출력할 값들 초기화
+while height <= 256:
+    now_inven = inven  # 입력받은 inven에 있는 블록 개수 복사
+    sec = 0  # 현재 높이에서 소모되는 시간
+
+    for i in range(n):
+        for j in range(m):
+            if grounds[i][j] > height:  # 땅이 현재 높이보다 높다면
+                cnt = grounds[i][j] - height
+                now_inven += 1 * cnt
+                sec += 2 * cnt
+            elif grounds[i][j] < height:  # 땅이 현재 높이보다 낮다면
+                cnt = height - grounds[i][j]
+                now_inven -= 1 * cnt
+                sec += 1 * cnt
+
+    if now_inven >= 0:  # inven의 블록이 0 이상인 경우 (= 가능한 경우)
+        if sec <= answer_sec:  # 정답 갱신
+            answer_sec, answer_height = sec, height
+    else:  # inven의 블록이 0 미만인 경우  (= 이 높이 이상은 전부 불가능. 블록 개수 모자라기 때문)
+        break
+    height += 1
+
+print(answer_sec, answer_height)
+
+
 # 20240723
 # 31:09
 
