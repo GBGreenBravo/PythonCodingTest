@@ -1,6 +1,6 @@
 # 20240809
 # 35:11
-# 1 / 1
+# 1 / 4
 
 n = int(input())
 meetings = [tuple(map(int, input().split())) for _ in range(n)]
