@@ -1,3 +1,7 @@
+# 20240818
+# 14:00
+# 1 / 1
+
 from collections import deque
 
 direction = ((0, 1), (0, -1), (1, 0), (-1, 0))
