@@ -2,6 +2,9 @@
 # 39:42
 # 1 / 1
 
+import sys
+sys.setrecursionlimit(100_000)
+
 
 def get_max_diameter(node):
     global mx_diameter
