@@ -11,7 +11,7 @@ def oob(y, x):
     return y < 0 or 10 <= y or x < 0 or 10 <= x
 
 
-# AP 좌표, 충전범위, 성능을 받아, 해당 범위 모두에 (충전범위, 좌표)를 추가하는 BFS 함수
+# AP 좌표, 충전범위, 성능을 받아, 해당 범위 모두에 (성능, 좌표)를 추가하는 BFS 함수
 def set_ap(sy, sx, c, p):
     visited = [[0] * 10 for _ in range(10)]
     visited[sy][sx] = 1
@@ -19,7 +19,7 @@ def set_ap(sy, sx, c, p):
     queue = deque()
     queue.append((sy, sx, 0))
 
-    area[sy][sx].append((p, (sy, sx)))  # 영역에 (충전범위, 좌표)를 추가
+    area[sy][sx].append((p, (sy, sx)))  # 영역에 (성능, 좌표)를 추가
 
     while queue:
         y, x, distance = queue.popleft()
