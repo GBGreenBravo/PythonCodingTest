@@ -94,7 +94,8 @@ def move_blocks(blocks, d, cnt):
         if len(blocks[i]) < n:
             blocks[i].extend([0 for _ in range(n - len(blocks[i]))])
 
-    blocks = rotate_clockwise(blocks, (4 - d) % 4)  # 0 방향으로 밀기 수행 후, 배열 초기 방향대로 복구.
+    # 어차피 4방향에 대해 재귀호출 하므로, 복구할 필요 X
+    # blocks = rotate_clockwise(blocks, (4 - d) % 4)  # 0 방향으로 밀기 수행 후, 배열 초기 방향대로 복구.
 
     for i in range(4):
         move_blocks([row[:] for row in blocks], i, cnt + 1)  # 4방향에 대한 밀기, 재귀호출
