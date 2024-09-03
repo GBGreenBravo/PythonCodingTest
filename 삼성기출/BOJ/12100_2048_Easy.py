@@ -41,7 +41,7 @@
 """
 
 
-# blocks 배열을 d회 시계방향 회전화여 반환하는 함수
+# blocks 배열을 d회 시계방향 회전하여 반환하는 함수
 def rotate_clockwise(blocks, d):
     for _ in range(d):
         blocks = [list(row[::-1]) for row in zip(*blocks)]  # 시계방향 90도 회전
@@ -112,3 +112,77 @@ move_blocks([row[:] for row in area], 2, 0)
 move_blocks([row[:] for row in area], 3, 0)
 
 print(answer)
+
+
+# 조금 더 정리된, 설명을 위한 코드
+"""
+# blocks 배열을 d회 시계방향 회전하여 반환하는 함수
+def rotate_clockwise(blocks, d):
+    for _ in range(d):
+        blocks = [list(row[::-1]) for row in zip(*blocks)]  # 시계방향 90도 회전
+    return blocks
+
+
+
+         3
+  ㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+  |             |
+  |             |
+0 |             | 2
+  |             |
+  |             |
+  ㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+         1
+
+# blocks를 d 방향(위의 방향)으로 밀고, 4방향에 대한 밀기를 재귀호출하는 함수
+def move_blocks(blocks, d, cnt):
+    if cnt == 5:  # 5번 밀기를 수행했다면, 최대값 갱신 & return
+        global answer
+        answer = max(answer, max(map(max, blocks)))
+        return
+
+    blocks = rotate_clockwise(blocks, d)  # 0 방향으로 밀기 수행하도록 배열을 시계방향으로 90도 d회 회전.
+
+    # 0 방향에 대한 밀기 수행 전, 0을 제거해주는 작업                           #       0 2 0 2          2 2
+    for i in range(n):                                                   #       4 0 0 4          4 4
+        blocks[i] = [j for j in blocks[i] if j > 0]                      #       2 4 0 8    =>    2 4 8
+                                                                         #       4 2 4 4          4 2 4 4
+
+    # 0 방향에 대한 밀기 수행                                               #       2 2               4
+    for i in range(n):                                                  #       4 4               8
+        new_row = []  # 밀기 수행 후의 행이 될 배열                         #       2 4 8      =>     2 4 8
+        idx = 0                                                        #       4 2 4 4           4 2 8
+        while idx < len(blocks[i]):
+            if idx == len(blocks[i]) - 1:             # 마지막 인덱스의 경우, 별도 처리 (idx+1 에러 방지)
+                new_row.append(blocks[i][idx])
+                break
+            if blocks[i][idx] == blocks[i][idx + 1]:  # 밀리는 다음 인덱스와 값이 같으면, 합치기
+                new_row.append(blocks[i][idx] * 2)
+                idx += 2
+            else:                                     # 밀리는 다음 인덱스와 값이 다르면, 현재 값만 append()
+                new_row.append(blocks[i][idx])
+                idx += 1
+        blocks[i] = new_row  # 밀기 수행 후의 행
+
+    # n*n 배열의 빈 곳을 0으로 채워주는 작업                                   #       4                 4 0 0 0
+    for i in range(n):                                                    #       8                 8 0 0 0
+        if len(blocks[i]) < n:                                            #       2 4 8      =>     2 4 8 0
+            blocks[i].extend([0 for _ in range(n - len(blocks[i]))])      #       4 2 8             4 2 8 0
+
+    for i in range(4):
+        move_blocks([row[:] for row in blocks], i, cnt + 1)  # 4방향에 대한 밀기, 재귀호출
+
+
+n = int(input())
+area = [list(map(int, input().split())) for _ in range(n)]
+
+answer = 0
+
+move_blocks([row[:] for row in area], 0, 0)
+move_blocks([row[:] for row in area], 1, 0)
+move_blocks([row[:] for row in area], 2, 0)
+move_blocks([row[:] for row in area], 3, 0)
+
+print(answer)
+
+"""
