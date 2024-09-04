@@ -120,3 +120,75 @@ for i in range(n):
     for j in range(n):
         answer += len(trees[i][j])
 print(answer)
+
+
+# 가을에 번식되는 나무들을 위해 added_trees 썼지만,
+# 사실 번식되는 나무의 나이 1은, 5의 배수가 아니므로 바로 추가돼도 상관 없음.
+"""
+directions = ((0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1))
+
+
+def oob(yy, xx):
+    return yy < 0 or n <= yy or xx < 0 or n <= xx
+
+
+n, m, k = map(int, input().split())
+feed = [list(map(int, input().split())) for _ in range(n)]  # 반복적으로 추가되는 양분의 배열
+
+area = [[5] * n for _ in range(n)]  # 현재 각 칸의 양분의 배열
+trees = [[[] for _ in range(n)] for _ in range(n)]  # 현재 각 칸의 나무들의 나이들이 담기는 배열
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    a -= 1
+    b -= 1
+    trees[a][b].append(c)  # 입력으로 주어진 나무 반영
+
+# k년 동안의 반복문 수행
+for _ in range(k):
+    # 봄/여름의 작업 코드
+    for i in range(n):
+        for j in range(n):
+            if not trees:  # (양분 먹을 / 죽어서 양분 추가할) 나무 없으면 continue
+                continue
+
+            food = area[i][j]  # 현재 칸의 초기 양분
+
+            added_food_from_dead_trees = 0  # 여름에 죽는 나무로 인해 추가되는 양분
+
+            now_trees = sorted(trees[i][j])  # 나이 어린 순부터 양분 먹기에, sorted()
+            next_trees = []  # 봄/여름이 지나고, 현재 칸에 저장될 나무들의 나이 배열
+
+            for age in now_trees:
+                if age <= food:  # 양분이 충분하면
+                    food -= age  # 나무 나이만큼 -=
+                    next_trees.append(age + 1)  # 1살 증가시켜서 저장
+                else:  # 양분이 충분하지 않으면
+                    added_food_from_dead_trees += age // 2  # 죽고 여름에 현재 칸에 나이//2 만큼 양분 추가함
+
+            area[i][j] = food + added_food_from_dead_trees  # 봄/여름이 지난 후의, 현재 칸의 양분
+            trees[i][j] = next_trees  # 봄/여름이 지난 후의, 현재 칸의 나무들의 나이 배열
+
+    # 가을/겨울의 작업 코드
+    added_trees = [[[] for _ in range(n)] for _ in range(n)]  # 번식되는 나이 1의 나무들이 담기는 배열
+    for i in range(n):
+        for j in range(n):
+            area[i][j] += feed[i][j]  # 겨울의 양분 추가 (가을의 작업과 독립적이므로, 먼저 해줘도 됨.)
+
+            # 아래는 가을의 작업 코드
+            if not trees[i][j]:  # 나무 없다면 번식할 나무도 없으므로, continue
+                continue
+
+            for tree_age in trees[i][j]:
+                if not tree_age % 5:  # 나무의 나이가 5의 배수인 경우
+                    for di, dj in directions:
+                        ni, nj = i + di, j + dj
+                        if not oob(ni, nj):
+                            trees[ni][nj].append(1)  # 영역 밖이 아니라면, 나이 1의 나무 추가 (1은 어차피 5의 배수 아니기에, 다른 칸에서 영향 X)
+
+# 답변(k년이 지난 후 살아남은 나무 수) 출력을 위한 코드
+answer = 0
+for i in range(n):
+    for j in range(n):
+        answer += len(trees[i][j])
+print(answer)
+"""
