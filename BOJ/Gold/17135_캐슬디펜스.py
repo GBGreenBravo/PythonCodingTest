@@ -1,3 +1,88 @@
+# 20240909
+# 17:53
+# 1 / 2
+
+# break 수행 시, break로 탈출하는 반복문 꼭 체크해주자..!
+
+from collections import deque
+
+direction = ((0, -1), (-1, 0), (0, 1))  # 좌 상 우
+
+
+def oob(y, x):
+    return y < 0 or n <= y or x < 0 or m <= x
+
+
+# 궁수 위치 3개(archer_arr)로 게임 수행하고, 죽인 적 수 반환하는 함수
+def play_game():
+    dead_enemy_cnt = 0  # 반환할 죽인 적 수
+
+    game_area = [row[:] for row in area]  # deepcopy
+
+    for _ in range(n):  # n번 동안 적 죽이고 적 내려오기 수행
+        dead_enemies = set()  # 현재 궁수턴에서 죽는 적 좌표 담길 set
+
+        # 각 궁수위치마다 죽일 적 찾는 BFS
+        for archer in archer_arr:
+            visited = [[0] * m for _ in range(n)]  # 방문체크 배열
+
+            queue = deque()
+            queue.append((n, archer, 0))  # 궁수 위지 좌표, 거리
+
+            while queue:
+                y, x, distance = queue.popleft()
+
+                if distance == d:  # 궁수로부터의 거리가 d라면, 더이상 못 가므로 break
+                    break
+
+                for dy, dx in direction:  # 좌 상 우 순서
+                    ny, nx = y + dy, x + dx
+                    if oob(ny, nx) or visited[ny][nx]:
+                        continue
+                    if game_area[ny][nx]:  # 적 있다면
+                        dead_enemies.add((ny, nx))  # 죽일 적 set에 넣어놓고 break
+                        break
+                    visited[ny][nx] = 1
+                    queue.append((ny, nx, distance + 1))
+                else:  # 죽일 적 못 찾았다면 계속
+                    continue
+                break  # 죽일 적 찾았다면 break
+
+        dead_enemy_cnt += len(dead_enemies)  # += 죽이게 되는 적의 수
+        for ey, ex in dead_enemies:
+            game_area[ey][ex] = 0  # 죽임 처리 (1 -> 0)
+
+        # 적 한칸씩 내려옴 처리
+        game_area.pop()
+        game_area.insert(0, [0] * m)
+
+    return dead_enemy_cnt  # 현재 궁수 조합에서, 죽인 적 수 반환
+
+
+# m 중에서 궁수 3명의 위치를 조합하는 함수
+def pick_archers(cnt, start_idx):
+    global max_answer
+
+    if cnt == 3:  # 조합 완성되면
+        max_answer = max(max_answer, play_game())  # 최대값 갱신
+        return
+
+    for i in range(start_idx, m):
+        archer_arr.append(i)
+        pick_archers(cnt + 1, i + 1)
+        archer_arr.pop()
+
+
+n, m, d = map(int, input().split())
+area = [list(map(int, input().split())) for _ in range(n)]
+
+max_answer = 0
+archer_arr = []
+pick_archers(0, 0)  # 궁수 3명 조합
+print(max_answer)
+
+
+"""
 # 20240806
 # 35:33
 # 1 / 1
@@ -75,3 +160,4 @@ answer = 0
 archer_visited = [0] * m  # 궁수 위치 중복을 피하기 위한 방문배열
 dfs_archer(0, [], -1)
 print(answer)
+"""
