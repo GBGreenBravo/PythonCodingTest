@@ -118,3 +118,87 @@ for _ in range(t):
         revise_numbers(average)  # 해당 평균으로, +1/-1 수행
 
 print(sum(map(sum, area)))  # 원판에 적힌 수 총합 반환
+
+
+# area에 list말고 deque로 넣어놔도 인덱싱 가능함
+"""
+from collections import deque
+
+direction = ((0, 1), (0, -1), (1, 0), (-1, 0),)
+
+
+def oob_row(y):
+    return y < 0 or n <= y
+
+
+# 들어온 1차원 배열에 대해, rotate_k만큼 시계/반시계 방향으로 회전시켜 반환하는 함수
+def rotate(array, is_counterclockwise, rotate_k):
+    if is_counterclockwise:  # 반시계방향이라면 rotate_k를 음수로
+        rotate_k *= -1
+    array.rotate(rotate_k)  # 시계/반시계 방향으로 rotate_k만큼 회전
+
+
+# 현재 원판에서 인접한 값이 같다면 BFS로 모두 0으로 만들고, 이러한 수행이 한번이라도 이뤄졌는지 True/False를 반환하는 함수
+def check_same_near():
+    same_near = False  # 반환할 Boolean Flag
+
+    visited = [[0] * m for _ in range(n)]  # BFS 탐색을 위한 방문배열
+
+    for r in range(n):
+        for c in range(m):
+            if not visited[r][c] and area[r][c]:  # 방문되지 않았고, 0이 아닌 숫자라면
+                same_indexes = [(r, c)]  # 같은 값을 갖는 BFS인접 좌표를 넣을 배열
+
+                queue = deque()
+                queue.append((r, c))
+
+                visited[r][c] = 1
+
+                while queue:
+                    y, x = queue.popleft()
+                    for dy, dx in direction:
+                        ny, nx = y + dy, (x + dx) % m  # nx는 같은 원판의 좌표를 의미하므로, oob가 없음
+                        if oob_row(ny) or visited[ny][nx]:  # ny가 oob거나 이미 방문했다면 continue
+                            continue
+                        if area[y][x] == area[ny][nx]:  # 인접좌표가 같은 값이라면
+                            queue.append((ny, nx))
+                            visited[ny][nx] = 1
+                            same_indexes.append((ny, nx))
+
+                if len(same_indexes) > 1:  # 같은 값을 가진 인접좌표가 있다면
+                    same_near = True  # Flag는 True로
+                    for sy, sx in same_indexes:  # 같은 값 가진 인접 좌표들 모두 지우기 처리(0으로 변경)
+                        area[sy][sx] = 0
+
+    return same_near  # 인접한 같은 값 지우기 1번이라도 수행됐다면 True / 1번도 없었다면 False
+
+
+# 평균보다 작은 값은 +1 / 평균보다 큰 값은 -1
+def revise_numbers(average_num):
+    for r in range(n):
+        for c in range(m):
+            if area[r][c]:
+                area[r][c] += 1 if average_num > area[r][c] else (-1 if average_num < area[r][c] else 0)
+
+
+n, m, t = map(int, input().split())
+area = [deque(map(int, input().split())) for _ in range(n)]
+for _ in range(t):
+    mul, d, k = map(int, input().split())
+    for row in range(mul - 1, n, mul):  # mul의 배수에 대해
+        rotate(area[row], d, k)  # 해당 원판 회전
+
+    if not check_same_near():  # 같은 인접수 하나도 없다면,
+        tmp_sum, tmp_cnt = 0, 0
+        for i in range(n):
+            for j in range(m):
+                if area[i][j]:  # 0은 숫자 취급 X
+                    tmp_cnt += 1
+                    tmp_sum += area[i][j]
+        if not tmp_cnt:  # 원판에 수가 하나도 없다면, break
+            break
+        average = tmp_sum / tmp_cnt  # 평균 구하고
+        revise_numbers(average)  # 해당 평균으로, +1/-1 수행
+
+print(sum(map(sum, area)))  # 원판에 적힌 수 총합 반환
+"""
