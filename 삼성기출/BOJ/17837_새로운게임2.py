@@ -180,3 +180,76 @@ while turn <= 1000:
     break
 else:
     print(-1)
+
+
+# 아래는 중복 로직 제거
+# + stacked에 (체스 말 idx, 방향정보) 말고, (체스 말 idx)만을 저장한 코드
+"""
+direction = (None, (0, 1), (0, -1), (-1, 0), (1, 0))
+opposite_d_idx = [None, 2, 1, 4, 3]
+
+
+def oob(y, x):
+    return y < 0 or n <= y or x < 0 or n <= x
+
+
+# i_idx번째 체스 말을 옮기고, 옮긴 곳에 말이 4개 이상 쌓였는지를 True/False로 반환하는 함수
+def move_individual(i_idx):
+    y, x, d_idx = individuals[i_idx]
+    dy, dx = direction[d_idx]
+
+    # 현재 방향으로 갔을 때, 범위밖/파란색 이면
+    if oob(y + dy, x + dx) or area[y + dy][x + dx] == 2:
+        d_idx = opposite_d_idx[d_idx]  # 반대 방향 idx
+        dy, dx = direction[d_idx]
+        # 반대 방향으로 갔을 때, 범위밖/파란색 이면
+        if oob(y + dy, x + dx) or area[y + dy][x + dx] == 2:
+            # 방향만 돌려 저장
+            individuals[i_idx] = (y, x, d_idx)
+            return
+
+    # 현재 방향으로 갔을 때, 만나는 색
+    forward = area[y + dy][x + dx]
+
+    moved_idx = stacked[y][x].index(i_idx)
+    moved_all = stacked[y][x][moved_idx:]  # 옮겨지는 말들
+    stacked[y][x] = stacked[y][x][:moved_idx]  # 기존 칸에서 빼기
+    for moved_idx in moved_all:
+        individuals[moved_idx] = (y + dy, x + dx, individuals[moved_idx][2])  # 옮겨지는 말들 위치정보 갱신
+    individuals[i_idx] = (individuals[i_idx][0], individuals[i_idx][1], d_idx)
+
+    # 현재 방향으로 갔을 때, 흰색을 만난 경우
+    if forward == 0:
+        stacked[y + dy][x + dx].extend(moved_all)
+        return len(stacked[y + dy][x + dx]) >= 4  # 옮긴 곳에 4개 이상 쌓였는지 True/False 반환
+
+    # 현재 방향으로 갔을 때, 빨간색을 만난 경우
+    elif forward == 1:
+        stacked[y + dy][x + dx].extend(moved_all[::-1])  # 흰색과 달리, 옮기는 원판을 뒤집어야 함
+        return len(stacked[y + dy][x + dx]) >= 4  # 옮긴 곳에 4개 이상 쌓였는지 True/False 반환
+
+
+n, k = map(int, input().split())
+area = [list(map(int, input().split())) for _ in range(n)]  # 체스판 색 정보
+
+stacked = [[[] for _ in range(n)] for _ in range(n)]  # 각 칸에 쌓이는 원판의 (index, 방향) 정보가 담길 배열
+individuals = []  # 체스 말들의 (좌표 정보, 방향 정보)가 담길 배열
+for idx in range(k):
+    a, b, c = map(int, input().split())
+    stacked[a - 1][b - 1].append(idx)
+    individuals.append((a - 1, b - 1, c))
+
+turn = 1
+while turn <= 1000:
+    # 모든 체스 말 차례대로 이동
+    for idx in range(k):
+        if move_individual(idx):  # 옮겨보고, 4개 이상 쌓였다면 break
+            break
+    else:
+        turn += 1
+        continue
+    print(turn)
+    break
+else:
+    print(-1)
+"""
