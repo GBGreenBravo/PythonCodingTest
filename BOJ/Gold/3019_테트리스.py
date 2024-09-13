@@ -13,9 +13,9 @@ shapes = (None,
           )
 
 c, p = map(int, input().split())
-height = 105
-area = [[0] * c for _ in range(height)]
 input_bottoms = list(map(int, input().split()))
+height = max(input_bottoms) + 4
+area = [[0] * c for _ in range(height)]
 for col in range(c):
     for r in range(input_bottoms[col]):
         area[-1 - r][col] = 1
