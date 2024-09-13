@@ -125,6 +125,7 @@ def move_shark(before_area, before_fish_info, sy, sx, sd, s_ate):
         # DFS 재귀 호출
         move_shark(next_area, next_fish_info, ny, nx, next_sd, next_s_ate)
 
+
 area = [[0] * 4 for _ in range(4)]  # 4*4배열에 있는 물고기 번호
 fish_dir_infos = [0] * 17  # 각 물고기 번호에 따른 방향 배열 (번호를 그대로 index로 활용하기 위해 앞에 0index 추가)
 
