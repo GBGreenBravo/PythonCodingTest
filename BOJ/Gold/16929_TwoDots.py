@@ -73,7 +73,6 @@ visited = [[0] * m for _ in range(n)]
 for i in range(n):
     for j in range(m):
         if not visited[i][j]:
-            target = (i, j)
             visited[i][j] = 1
             if dfs(i, j, 1):
                 print('Yes')
