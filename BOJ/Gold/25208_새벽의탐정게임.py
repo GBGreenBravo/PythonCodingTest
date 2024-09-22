@@ -73,7 +73,7 @@ while queue:
 
         # 종료위치 -> 결과 저장 & continue(!!!)
         if ny == ey and nx == ex:
-            result_prison.append(roll(prison, di))
+            result_prison.append(next_prison)
             result_distance.append(distance)
             continue
 
