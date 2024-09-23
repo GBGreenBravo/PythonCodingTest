@@ -98,6 +98,13 @@ def move_people():
                 else:
                     y, x = sy, sx  # 머리사람(1) 좌표부터
 
+                    """
+                    아래와 같이, 4를 한칸씩 밀어서 끝으로 보내는 while문
+                    41223 => 14223
+                    14223 => 12423
+                    12423 => 12243
+                    12243 => 12234
+                    """
                     while True:
                         something, four = None, None  # something: 안접한 2or3의 좌표 / four: 인접한 4의 좌표
                         for dy, dx in direction:
