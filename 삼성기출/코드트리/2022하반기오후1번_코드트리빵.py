@@ -146,7 +146,7 @@ def move(sy, sx, ey, ex):
 
 n, m = map(int, input().split())
 base_camps = [list(map(int, input().split())) for _ in range(n)]  # 출발 가능한 베이스캠프 배열
-departures = [None] + [tuple(map(lambda dep: int(dep) - 1, input().split())) for _ in range(m)]
+arrivals = [None] + [tuple(map(lambda dep: int(dep) - 1, input().split())) for _ in range(m)]  # 사람들의 도착지점 배열
 
 restricted = [[0] * n for _ in range(n)]  # 못 지나감 처리가 반영될 배열
 
@@ -170,6 +170,6 @@ while not time or movers:  # 사람들 이동이 모두 종료될 때까지
 
     # m초 이하라면, 현재 시간의 사람 출발시키기
     if time <= m:
-        depart(*departures[time])
+        depart(*arrivals[time])
 
 print(time)
