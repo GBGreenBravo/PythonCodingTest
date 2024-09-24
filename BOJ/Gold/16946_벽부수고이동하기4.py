@@ -1,6 +1,80 @@
+# 20240924
+# 13:14
+# 1 / 2
+
+from collections import deque
+
+direction = ((0, 1), (0, -1), (1, 0), (-1, 0))
+
+
+def oob(y, x):
+    return y < 0 or n <= y or x < 0 or m <= x
+
+
+# (sy, sx)의 BFS 그룹에 대해 모두 group_flag를 표시하고, 그룹의 수를 저장하는 함수
+def count_group_cnt(sy, sx):
+    group_cnt = 1  # 현재 그룹의 수
+
+    group_visited[sy][sx] = group_flag  # 방문배열에 group_flag로 표시
+
+    queue = deque()
+    queue.append((sy, sx))
+
+    while queue:
+        y, x = queue.popleft()
+        for dy, dx in direction:
+            ny, nx = y + dy, x + dx
+            if oob(ny, nx) or group_visited[ny][nx] or walls[ny][nx]:
+                continue
+            group_visited[ny][nx] = group_flag  # 방문배열에 group_flag로 표시
+            queue.append((ny, nx))
+            group_cnt += 1
+
+    group_cnts.append(group_cnt)  # 그룹의 수 추가 (index: group_flag)
+
+
+n, m = map(int, input().split())
+
+# 입력받는 벽 배열
+walls = [list(str(input())) for _ in range(n)]
+for i in range(n):
+    for j in range(m):
+        walls[i][j] = int(walls[i][j])
+
+
+group_cnts = [0]  # 각 그룹의 수를 표시
+group_flag = 0
+group_visited = [[0] * m for _ in range(n)]  # 칸별 각 그룹의 group_flag가 표시되는 배열
+for i in range(n):
+    for j in range(m):
+        if not walls[i][j] and not group_visited[i][j]:  # 벽이 아니고 방문 안 했다면 -> 새 그룹 BFS 탐색
+            group_flag += 1
+            count_group_cnt(i, j)
+
+# 벽 부쉈을 때, 이동가능한 칸 갱신
+for i in range(n):
+    for j in range(m):
+        # 벽이라면
+        if walls[i][j]:
+            merged_groups = set()  # 인접한 칸에 같은 그룹이 있을 수 있기에, set()으로 관리
+
+            for di, dj in direction:
+                ni, nj = i + di, j + dj
+                if oob(ni, nj) or walls[ni][nj]:
+                    continue
+                # 인접 칸이 빈칸이라면, 그룹번호(index) 추가
+                merged_groups.add(group_visited[ni][nj])
+
+            # 인접 그룹의 총합 + 1(현재 벽 좌표)를 10으로 나눈 나머지
+            walls[i][j] = (sum([group_cnts[group] for group in merged_groups]) + 1) % 10
+
+for row in walls:
+    print(*row, sep="")
+
+
 # 20240826
 # 15:04
-# 1 / 1
+# 1 / 2
 
 from collections import deque
 
