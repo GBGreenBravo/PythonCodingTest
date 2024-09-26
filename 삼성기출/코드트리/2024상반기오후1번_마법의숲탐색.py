@@ -129,6 +129,7 @@ def move_golem(sx, e_idx):
             area[y + 1][x], area[y][x], area[y + 1][x + 1], area[y + 2][x], area[y + 1][x - 1] = area[y][x], area[y - 1][x], area[y][x + 1], area[y + 1][x], area[y][x - 1]
             # 이동한 뒤 비워지는 좌표들 0으로 표시
             area[y][x - 1], area[y - 1][x], area[y][x + 1] = 0, 0, 0
+            # 골렘 중심 좌표 갱신
             y, x = y + 1, x
 
         # (우선순위 2) 왼쪽&아래로 이동 가능한 경우
