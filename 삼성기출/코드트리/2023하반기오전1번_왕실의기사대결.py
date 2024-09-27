@@ -1,10 +1,10 @@
 # 20240925
 # 1:45:00
-# 1 / 1
+# 1 / 2
 
 """
 풀이 시간: 1시간 45분 (09:03 - 10:48)
-풀이 시도: 1 / 1
+풀이 시도: 1 / 2
 
 
 1. 문제 정독 & 풀이 구상 (09:03 - 09:14)
@@ -61,6 +61,11 @@
     X (7) 다양한 구상에 따른, 다른 구현
         - 이동 확정된 기사들을 이동시키는 과정에서, H*W 만큼 0으로 바꿨다가 다시 새로운 위치에 H*W 만큼 기사번호를 저장한 코드가 개선 가능했습니다.
           (그러나, 시간복잡도 체크에서 이상 없었고, 더 안전/검증쉬운 코드라고 생각했기에, 그대로 뒀습니다.)
+
+
+5. 코드트리 미흡한 채점
+    이동 순서 정확하게 검증되지 않아서, 이동 과정에서 기사를 지우는 이슈 있었음.
+    코드트리에서 해당 케이스에 대한 채점테게가 없었어서 정답 처리 됐었음.
 """
 
 from collections import deque
@@ -102,7 +107,7 @@ def move_knights(start_knight, d_idx):
             return None
         queue.extend(set(next_knights_line) - {0})  # 이동 가능하다면, 밀려서 이동하는 기사들(0 제외) queue에 추가
 
-    return moving_knights[::-1]  # 움직이는 게 확정된 기사들 배열 반환 (reverse 안 해도 됨)
+    return moving_knights
 
 
 # 움직이는 게 확정된 기사들의 피해량을 계산하고, 정보를 갱신하는 함수
@@ -122,7 +127,8 @@ def cal_damage_and_renew_info(moving_knights, d_idx):
         # 기존 위치 0으로
         for r in range(knight_y, knight_y + knight_h):
             for c in range(knight_x, knight_x + knight_w):
-                knights_arr[r][c] = 0
+                if knights_arr[r][c] == now_knight:
+                    knights_arr[r][c] = 0
 
         # 체력이 0이하가 되면 -> 체스판에서 사라짐 처리 (체력은 0으로)
         if knight_life <= 0:
