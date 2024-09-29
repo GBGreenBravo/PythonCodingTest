@@ -1,3 +1,100 @@
+# 20240929
+# 26:37
+# 1 / 1
+
+from collections import deque
+
+direction = ((0, 1), (0, -1), (1, 0), (-1, 0))
+
+
+def oob(y, x):
+    return y < 0 or n <= y or x < 0 or m <= x
+
+
+def make_greens(cnt, start_idx):
+    if cnt == g:
+        greens.append([gg for gg in green_arr])
+        return
+
+    for idx in range(start_idx, g + r):
+        green_arr.append(idx)
+        make_greens(cnt + 1, idx + 1)
+        green_arr.pop()
+
+
+def spread(green_indexes):
+    global max_answer
+
+    visited = [[0] * m for _ in range(n)]
+    queue = deque()
+
+    for idx in range(r + g):
+        sy, sx = dfs_arr[idx]
+        if idx in green_indexes:
+            queue.append((1, sy, sx))
+            visited[sy][sx] = 1
+        else:
+            queue.append((-1, sy, sx))
+            visited[sy][sx] = -1
+
+    flowers = [[0] * m for _ in range(n)]
+    while queue:
+        g_or_r, y, x = queue.popleft()
+        if flowers[y][x]:
+            continue
+
+        for dy, dx in direction:
+            ny, nx = y + dy, x + dx
+            if oob(ny, nx) or not area[ny][nx] or flowers[ny][nx]:
+                continue
+
+            if visited[ny][nx] + visited[y][x] + g_or_r == 0:
+                visited[ny][nx] = 0
+                flowers[ny][nx] = 1
+
+            if visited[ny][nx]:
+                continue
+
+            visited[ny][nx] = visited[y][x] + g_or_r
+            queue.append((g_or_r, ny, nx))
+
+    max_answer = max(max_answer, sum(map(sum, flowers)))
+
+
+def dfs(cnt, start_idx):
+    if cnt == r + g:
+        for g_indexes in greens:
+            spread(g_indexes)
+        return
+
+    for idx in range(start_idx, len_two_indexes):
+        dfs_arr.append(two_indexes[idx])
+        dfs(cnt + 1, idx + 1)
+        dfs_arr.pop()
+
+
+n, m, g, r = map(int, input().split())
+area = [list(map(int, input().split())) for _ in range(n)]
+
+greens = []
+green_arr = []
+make_greens(0, 0)
+
+two_indexes = []
+for i in range(n):
+    for j in range(m):
+        if area[i][j] == 2:
+            two_indexes.append((i, j))
+len_two_indexes = len(two_indexes)
+
+max_answer = 0
+
+dfs_arr = []
+dfs(0, 0)
+
+print(max_answer)
+
+
 # 20240813
 # 43:09
 # 1 / 1
