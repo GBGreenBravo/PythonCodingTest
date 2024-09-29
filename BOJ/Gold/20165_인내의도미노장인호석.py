@@ -27,7 +27,7 @@ for _ in range(r):
         tmp_score = 1
 
         y, x = a_y + dy, a_x + dx
-        ey, ex = a_y + dy * area[a_y][a_x],  a_x + dx * area[a_y][a_x]
+        ey, ex = a_y + dy * area[a_y][a_x], a_x + dx * area[a_y][a_x]
         while not oob(y, x) and not (y == ey and x == ex):
             if not dead[y][x]:
                 dead[y][x] = 1
