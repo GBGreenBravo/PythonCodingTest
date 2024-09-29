@@ -1,3 +1,47 @@
+# 20240929
+# 11:18
+# 1 / 1
+
+from collections import deque
+
+t = int(input())
+for _ in range(t):
+    start, end = map(int, input().split())
+
+    visited = [0] * 10000
+    visited[start] = '_'
+
+    queue = deque()
+    queue.append(start)
+    while queue and not visited[end]:
+        now = queue.popleft()
+        history = visited[now]
+
+        d = (now * 2) % 10000
+        if not visited[d]:
+            visited[d] = history + 'D'
+            queue.append(d)
+
+        s = now - 1 if now else 9999
+        if not visited[s]:
+            visited[s] = history + 'S'
+            queue.append(s)
+
+        four = '0' * (4 - len(str(now))) + str(now)
+
+        l = int(four[1:] + four[0])
+        if not visited[l]:
+            visited[l] = history + 'L'
+            queue.append(l)
+
+        r = int(four[-1] + four[:3])
+        if not visited[r]:
+            visited[r] = history + 'R'
+            queue.append(r)
+
+    print(visited[end][1:])
+
+
 # 20240815
 # 14:37
 # 1 / 1
