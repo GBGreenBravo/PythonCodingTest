@@ -1,3 +1,46 @@
+# 20240930
+# 17:10
+# 1 / 2
+
+# *2 먼저 안 뽑는 일반적인 deque기반 BFS 써서 한번 틀렸음.
+
+
+from heapq import heappop, heappush
+
+
+def oob(node):
+    return node < 0 or 150_000 <= node
+
+
+n, k = map(int, input().split())
+if n >= k:
+    print(n - k)
+else:
+    visited = [0] * 150_000
+    visited[n] = 1
+
+    queue = []
+    heappush(queue, (1, n))
+
+    while queue and not visited[k]:
+        distance, now = heappop(queue)
+
+        next_ = now * 2
+        while not oob(next_) and not visited[next_]:
+            visited[next_] = distance
+            heappush(queue, (distance, next_))
+            next_ *= 2
+
+        if not oob(now + 1) and not visited[now + 1]:
+            visited[now + 1] = distance + 1
+            heappush(queue, (distance + 1, now + 1))
+        if not oob(now - 1) and not visited[now - 1]:
+            visited[now - 1] = distance + 1
+            heappush(queue, (distance + 1, now - 1))
+
+    print(visited[k] - 1)
+
+
 # 20240813
 # 34:13
 # 1 / 3
