@@ -35,6 +35,9 @@ def find_points_1(arr):
             if arr[i][j]:
                 length = (9 - arr[i][::-1].index(1)) - arr[i].index(1)
 
+                if not length:
+                    return None
+
                 for l in range(length + 1):
                     if i + l == 10:
                         break
