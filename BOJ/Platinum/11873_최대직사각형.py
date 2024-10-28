@@ -60,6 +60,6 @@ while True:
                     left_now = min(left_now, left[i + 1 - height][j])
                     if left_now * height > max_answer:
                         max_answer = left_now * height
-                    elif left_max * height <= max_answer:  # (최소 너비 * 최대 높이)가 최대값 이하 되면, break
+                    elif left_now * up_max <= max_answer:  # (최소 너비 * 최대 높이)가 최대값 이하 되면, break
                         break
     print(max_answer)
