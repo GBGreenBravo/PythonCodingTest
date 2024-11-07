@@ -51,14 +51,21 @@ answer = n * n * m
 for i in range(n):
     for j in range(n):
         if not area[i][j]:
-            near_cliff_cnt = 0
-            for di, dj in direction:
-                ni, nj = i + di, j + dj
+            ew_zero, ns_zero = False, False
+            for di, dj in ((0, 1), (0, -1)):
+                ni, nj = i, j + dj
                 if oob(ni, nj):
                     continue
                 if not area[ni][nj]:
-                    near_cliff_cnt += 1
-            if near_cliff_cnt < 2:
+                    ew_zero = True
+            for di, dj in ((1, 0), (-1, 0)):
+                ni, nj = i + di, j
+                if oob(ni, nj):
+                    continue
+                if not area[ni][nj]:
+                    ns_zero = True
+
+            if not (ew_zero and ns_zero):
                 area[i][j] = m
                 bfs_result = bfs()
                 if bfs_result:
