@@ -1,3 +1,122 @@
+# 20241111
+# 42:31
+# 1 / 1
+from collections import deque
+
+direction = ((-1, 0), (0, 1), (1, 0), (0, -1))  # 0123->북동남서
+
+
+def oob(y, x):
+    return y < 0 or N <= y or x < 0 or M <= x
+
+
+def find_startpoint():
+    visited_cnt = 1
+    y, x, d = by, bx, bd
+    distance = 0
+    while visited_cnt < N * M:
+        distance += 1
+        dy, dx = direction[d]
+        for _ in range(distance):
+            y, x = y + dy, x + dx
+            if not oob(y, x):
+                if area[y][x] == 1:
+                    return y, x
+                visited_cnt += 1
+        d = (d + 1) % 4
+        dy, dx = direction[d]
+        for _ in range(distance):
+            y, x = y + dy, x + dx
+            if not oob(y, x):
+                if area[y][x] == 1:
+                    return y, x
+                visited_cnt += 1
+        d = (d + 1) % 4
+    return None
+
+
+def bfs(sy, sx):
+    global a_life
+
+    visited = [[0] * M for _ in range(N)]
+    visited[sy][sx] = 1
+    queue = deque()
+    queue.append((sy, sx, b_attack))
+
+    while queue:
+        y, x, remain_life = queue.popleft()
+        if remain_life == 1:
+            return
+
+        for dy, dx in direction:
+            ny, nx = y + dy, x + dx
+            if oob(ny, nx) or visited[ny][nx] or area[ny][nx] == 1 or (ny, nx) == (by, bx):
+                continue
+            if (ny, nx) == (ay, ax):
+                a_life -= remain_life - 1
+                return
+            visited[ny][nx] = 1
+            queue.append((ny, nx, remain_life - 1))
+
+
+N, M = map(int, input().split())
+area = [list(map(int, input().split())) for _ in range(N)]
+a_life, a_attack, b_life, b_attack = map(int, input().split())
+
+ay, ax, ad = None, None, None
+by, bx, bd = None, None, None
+
+for i in range(N):
+    for j in range(M):
+        if area[i][j] == 3:
+            by, bx = i, j
+            area[i][j] = 0
+            for d_idx, (di, dj) in enumerate(direction):
+                ni, nj = i + di, j + dj
+                if not oob(ni, nj) and area[ni][nj] == 2:
+                    ay, ax, ad = ni, nj, d_idx
+                    area[ni][nj] = 0
+                    bd = d_idx
+                    break
+
+a_dead, b_dead = False, False
+while True:
+    # 1. 아리 공격
+    b_life -= a_attack
+    if b_life <= 0:
+        b_dead = True
+        break
+
+    # 2. 아리 이동
+    ari_moved = False
+    for i in range(4):
+        di, dj = direction[(ad + i) % 4]
+        ni, nj = ay + di, ax + dj
+        if not oob(ni, nj) and area[ni][nj] == 0 and (by, bx) != (ni, nj):
+            ari_moved = direction[ad]
+            ay, ax, ad = ni, nj, (ad + i) % 4
+            break
+        a_life -= 1
+    if a_life <= 0:
+        a_dead = True
+        break
+
+    # 3. 보스 공격
+    found_result = find_startpoint()
+    if found_result:
+        bfs(*found_result)
+        if a_life <= 0:
+            a_dead = True
+            break
+
+    # 4. 보스 이동
+    if ari_moved:
+        di, dj = ari_moved
+        by, bx, bd = by + di, bx + dj, ad
+
+print("VICTORY!" if b_dead else "CAVELIFE...")
+
+
 # 20241010
 # 1:02:51
 # 1 / 3
