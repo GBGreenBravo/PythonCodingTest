@@ -1,6 +1,6 @@
+# 20241130
 # 32:16
 # 1 / 3
-# 20241130
 
 N = int(input())
 points = [tuple(map(int, input().split())) for _ in range(N)]
