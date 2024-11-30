@@ -98,7 +98,7 @@ def bomb(p_idx):
         oy, ox = players[other_idx][:-1]
         if (oy, ox) == (ty, tx):
             players[other_idx] = None
-            # print(str(p_idx) + " -- killed -> " + str(other_idx))
+            print(str(p_idx) + " -- killed -> " + str(other_idx))
             total_killed_cnt += 1
 
 
@@ -183,22 +183,22 @@ for test in range(1, T + 1):
     while turn <= 1000:
         this_turn_moved = False
 
-        # print()
-        # print(turn)
-        # print("before moving")
-        # print(*players, sep="\n")
-        # print_area = [row[:] for row in area]
-        # for pii in range(1, K + 1):
-        #     if players[pii]:
-        #         print_area[players[pii][0]][players[pii][1]] = "|" + str(pii) + "|"
-        # for prow in print_area:
-        #     for pitem in prow:
-        #         if str(pitem)[-1] != '|':
-        #             print(" " + str(pitem) + " ", end=" ")
-        #         else:
-        #             print(str(pitem), end=" ")
-        #     print()
-        # print("walls:", walls)
+        print()
+        print(turn)
+        print("before moving")
+        print(*players, sep="\n")
+        print_area = [row[:] for row in area]
+        for pii in range(1, K + 1):
+            if players[pii]:
+                print_area[players[pii][0]][players[pii][1]] = "|" + str(pii) + "|"
+        for prow in print_area:
+            for pitem in prow:
+                if str(pitem)[-1] != '|':
+                    print(" " + str(pitem) + " ", end=" ")
+                else:
+                    print(str(pitem), end=" ")
+            print()
+        print("walls:", walls)
 
         for player_idx in range(1, K + 1):
             if not players[player_idx]:
@@ -209,19 +209,19 @@ for test in range(1, T + 1):
             if players[player_idx]:
                 decrease_walls(player_idx)
 
-        # print("after moving")
-        # print(*players, sep="\n")
-        # print_area = [row[:] for row in area]
-        # for pii in range(1, K + 1):
-        #     if players[pii]:
-        #         print_area[players[pii][0]][players[pii][1]] = "|" + str(pii) + "|"
-        # for prow in print_area:
-        #     for pitem in prow:
-        #         if str(pitem)[-1] != '|':
-        #             print(" " + str(pitem) + " ", end=" ")
-        #         else:
-        #             print(str(pitem), end=" ")
-        #     print()
+        print("after moving")
+        print(*players, sep="\n")
+        print_area = [row[:] for row in area]
+        for pii in range(1, K + 1):
+            if players[pii]:
+                print_area[players[pii][0]][players[pii][1]] = "|" + str(pii) + "|"
+        for prow in print_area:
+            for pitem in prow:
+                if str(pitem)[-1] != '|':
+                    print(" " + str(pitem) + " ", end=" ")
+                else:
+                    print(str(pitem), end=" ")
+            print()
 
         if not this_turn_moved or not sum([bool(player) for player in players]):
             break
@@ -230,7 +230,7 @@ for test in range(1, T + 1):
 
         turn += 1
 
-    # print("total_killed_cnt:", total_killed_cnt)
+    print("total_killed_cnt:", total_killed_cnt)
     if turn == 1001 or not getter_cnt:
         print(f"#{test} -1")
     else:
