@@ -2,6 +2,14 @@
 # 1:23:46
 # 1 / 1
 
+"""
+changes의 0~7이 뜻하는 바는 아래와 같음.
+
+0      1      2      3      4      5      6      7
+1 2    2 1    4 3    3 4    3 1    1 3    2 4    4 2
+3 4    4 3    2 1    1 2    4 2    2 4    1 3    3 1
+"""
+
 N, R = map(int, input().split())
 area = [list(map(int, input().split())) for _ in range(2 ** N)]
 commands = [tuple(map(int, input().split())) for _ in range(R)]
