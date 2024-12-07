@@ -49,20 +49,12 @@ def bfs():
                 next_queue.append((y, x, finding, other_sort, changed + 1))
 
             for ny, nx in connected[y][x][sort]:
-                if not visited[ny][nx][finding][sort]:
+                if not visited[ny][nx][finding][sort] or visited[ny][nx][finding][sort][1] > changed:
                     if area[ny][nx] == finding and finding != N**2 and (not visited[ny][nx][finding + 1][sort] or visited[ny][nx][finding + 1][sort][1] > changed):
                         visited[ny][nx][finding + 1][sort] = (time, changed)
                         next_queue.append((ny, nx, finding + 1, sort, changed))
                     visited[ny][nx][finding][sort] = (time, changed)
                     next_queue.append((ny, nx, finding, sort, changed))
-                else:
-                    origin_time, origin_changed = visited[ny][nx][finding][sort]
-                    if origin_time == time and origin_changed > changed:
-                        if area[ny][nx] == finding and finding != N**2 and (not visited[ny][nx][finding + 1][sort] or visited[ny][nx][finding + 1][sort][1] > changed):
-                            visited[ny][nx][finding + 1][sort] = (time, changed)
-                            next_queue.append((ny, nx, finding + 1, sort, changed))
-                        visited[ny][nx][finding][sort] = (time, changed)
-                        next_queue.append((ny, nx, finding, sort, changed))
 
         if sum(bool(v) for v in visited[ey][ex][N**2]):
             print(*min([v for v in visited[ey][ex][N**2] if v]))
