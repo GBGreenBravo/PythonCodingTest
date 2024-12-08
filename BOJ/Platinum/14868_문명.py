@@ -80,3 +80,80 @@ while remain_civilizations:
     spread()
 
 print(time)
+
+
+# 조금 더 간결하게 정리한 코드
+# (remain_civilizations -= 1)의 책임을 union()함수로 이전
+"""
+direction = ((0, 1), (0, -1), (1, 0), (-1, 0))
+
+
+def oob(y, x):
+    return y < 0 or N <= y or x < 0 or N <= x
+
+
+def find(a):
+    if parents[a] != a:
+        parents[a] = find(parents[a])
+    return parents[a]
+
+
+def union(a, b):
+    global remain_civilizations
+    a = find(a)
+    b = find(b)
+    if a == b:
+        return
+    elif a < b:
+        parents[b] = a
+    else:
+        parents[a] = b
+    remain_civilizations -= 1
+
+
+def check_spreading_near():
+    for y, x in spreading:
+        for dy, dx in direction:
+            ny, nx = y + dy, x + dx
+            if oob(ny, nx) or not area[ny][nx]:
+                continue
+            union(area[y][x], area[ny][nx])
+
+
+def spread():
+    global spreading
+    next_spreading = []
+    for y, x in spreading:
+        for dy, dx in direction:
+            ny, nx = y + dy, x + dx
+            if oob(ny, nx) or area[ny][nx]:
+                continue
+            area[ny][nx] = area[y][x]
+            next_spreading.append((ny, nx))
+            for ddy, ddx in direction:
+                nny, nnx = ny + ddy, nx + ddx
+                if not oob(nny, nnx) and area[nny][nnx]:
+                    union(area[ny][nx], area[nny][nnx])
+    spreading = next_spreading
+
+
+N, K = map(int, input().split())
+area = [[0] * N for _ in range(N)]
+
+parents = [None] + [i for i in range(1, K + 1)]
+spreading = []
+
+for i in range(1, K + 1):
+    aa, bb = map(lambda inp: int(inp) - 1, input().split())
+    area[aa][bb] = i
+    spreading.append((aa, bb))
+
+remain_civilizations = K - 1
+check_spreading_near()
+time = 0
+while remain_civilizations:
+    time += 1
+    spread()
+
+print(time)
+"""
