@@ -3,9 +3,6 @@
 # 1 / 3
 
 from heapq import heappop, heappush
-import sys
-
-input = sys.stdin.readline
 
 
 def find_min_route():
