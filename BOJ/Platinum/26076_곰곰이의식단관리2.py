@@ -111,3 +111,51 @@ else:
             break
         else:
             print(2)
+
+
+# 아래는, 북동->남서 로 가는 길을 01BFS로 구현한 코드
+
+from collections import deque
+
+N, M = map(int, input().split())
+area = [list(map(int, input().split())) for _ in range(N)]
+
+if N == 1 or M == 1:
+    print(0 if sum(map(sum, area)) else 1)
+else:
+    if (area[0][1] and area[1][0]) or (area[-1][-2] and area[-2][-1]):
+        print(0)
+        exit()
+
+    area = [[-1] * (M + 2)] + [[-1] + row + [-1] for row in area] + [[-1] * (M + 2)]
+
+    visited = [[2] * (M + 2) for _ in range(N + 2)]
+    queue = deque()
+    for c in range(2, M + 1):
+        if area[1][c]:
+            visited[1][c] = 0
+            queue.appendleft((1, c))
+        else:
+            visited[1][c] = 1
+            queue.append((1, c))
+    for r in range(2, N):
+        if area[r][M]:
+            visited[r][M] = 0
+            queue.appendleft((r, M))
+        else:
+            visited[r][M] = 1
+            queue.append((r, M))
+
+    while queue:
+        y, x = queue.popleft()
+        flag = visited[y][x]
+        for dy, dx in ((-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1)):
+            ny, nx = y + dy, x + dx
+            if area[ny][nx] == 1 and visited[ny][nx] > flag:
+                visited[ny][nx] = flag
+                queue.appendleft((ny, nx))
+            elif area[ny][nx] == 0 and visited[ny][nx] == 2 and not flag:
+                visited[ny][nx] = 1
+                queue.append((ny, nx))
+
+    print(min(min([visited[r][1] for r in range(2, N + 1)]), min([visited[N][c] for c in range(1, M)])))
