@@ -2,27 +2,23 @@
 # 1:55:41
 # 1 / 4
 
+"""
+행이나 열이 1이라면:
+    1이 하나라도 존재하면 => "0"
+    다 0이면 => "1"
+
+행과 열이 2 이상이라면:
+    시작좌표나 도착좌표가 막혀있다면 => "0"
+    (북/동 에서 이어진 장애물은 2로 표시 & 남/서 에서 이어된 장애물은 3으로 표시)
+    BFS로 닿는지 체크. 안 닿으면 => "0"
+    갈 수 있는 빈칸들 중, 주변8방향에 2나 3의 장애물이 있는 곳이면 => "1"
+    위 다 안되면 "2"
+"""
+
 from collections import deque
 
 direction_4 = ((0, 1), (0, -1), (1, 0), (-1, 0))
 direction_8 = ((-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1))
-
-
-def check():
-    visited = [[0] * (M + 2) for _ in range(N + 2)]
-    visited[1][1] = 1
-    dq = deque([(1, 1)])
-    while dq:
-        y, x = dq.popleft()
-        for dy, dx in direction_4:
-            ny, nx = y + dy, x + dx
-            if visited[ny][nx] or area[ny][nx]:
-                continue
-            if ny == N and nx == M:
-                return False
-            visited[ny][nx] = 1
-            dq.append((ny, nx))
-    return True
 
 
 N, M = map(int, input().split())
