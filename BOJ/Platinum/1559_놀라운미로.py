@@ -10,7 +10,7 @@ d_dict = {'N': 0, 'E': 1, 'S': 2, 'W': 3}
 
 
 def bfs():
-    visited = [[[21e9 for _ in range(N)] for _ in range(M)] for _ in range(2**T)]
+    visited = [[[32e4 for _ in range(N)] for _ in range(M)] for _ in range(2**T)]
     visited[0][0][0] = -1
     queue = [(0, 0, 0, 4)]
     time = 0
@@ -32,7 +32,7 @@ def bfs():
             visited[collected][ny][nx] = time
             next_queue.append((collected, ny, nx, 4))
 
-        if visited[-1][-1][-1] != 21e9:
+        if visited[-1][-1][-1] != 32e4:
             print(time + 1)
             return
 
