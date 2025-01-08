@@ -1,3 +1,8 @@
+# 20250109
+# 22:30
+# 1 / 1
+
+
 def find(a):
     if parent[a] != a:
         parent[a] = find(parent[a])
