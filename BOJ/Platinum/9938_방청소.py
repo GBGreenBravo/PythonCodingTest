@@ -63,7 +63,7 @@ for first, second in inputs:
     print("SMECE")
 
 
-# 아래는 if문이 더 간소화된 풀이
+# 아래는 더 간소화된 풀이
 """
 def find(x):
     if parent[x] != x:
@@ -95,17 +95,12 @@ for _ in range(N):
     first = find(first)
     second = find(second)
 
+    union(first, second)
+    first = find(first)
+    
     if max_group_cnt[first] - now_group_cnt[first]:
         now_group_cnt[first] += 1
-        union(first, second)
         print("LADICA")
-        continue
-
-    if max_group_cnt[second] - now_group_cnt[second]:
-        now_group_cnt[second] += 1
-        union(first, second)
-        print("LADICA")
-        continue
-
-    print("SMECE")
+    else:
+        print("SMECE")
 """
