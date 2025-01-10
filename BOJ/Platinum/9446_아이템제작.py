@@ -18,7 +18,7 @@ for _ in range(M):
 while queue:
     new_price, first, second, third = heappop(queue)
 
-    if prices[first] + prices[second] != new_price or prices[third] <= new_price:
+    if prices[third] <= new_price:
         continue
 
     prices[third] = new_price
