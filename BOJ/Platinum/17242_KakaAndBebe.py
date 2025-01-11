@@ -21,7 +21,8 @@ def dijkstra():
             continue
 
         if now == N - 1:
-            continue
+            print(stress)
+            return
 
         for nex, added_kaka, added_bebe in connected[now]:
             next_kaka, next_bebe = kaka + added_kaka, bebe + added_bebe
