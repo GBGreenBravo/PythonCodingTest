@@ -57,3 +57,46 @@ for _ in range(M):
     connected[aa].append((bb, cc, dd))
     connected[bb].append((aa, cc, dd))
 dijkstra()
+
+
+# 더 짧고 효율 높은 코드
+"""
+from heapq import heappop, heappush
+import sys
+input = sys.stdin.readline
+
+
+def dijkstra():
+    visited = [[] for _ in range(N)]
+    visited[0].append((0, 0))
+
+    queue = [(0, 0, 0, 0)]
+    while queue:
+        stress, now, kaka, bebe = heappop(queue)
+
+        if now == N - 1:
+            print(stress)
+            return
+
+        for nex, added_kaka, added_bebe in connected[now]:
+            next_kaka, next_bebe = kaka + added_kaka, bebe + added_bebe
+            if 1000 < next_kaka or 1000 < next_bebe:
+                continue
+            for k, b in visited[nex]:
+                if k <= next_kaka and b <= next_bebe:
+                    break
+            else:
+                visited[nex].append((next_kaka, next_bebe))
+                heappush(queue, (next_kaka * next_bebe, nex, next_kaka, next_bebe))
+
+    print(-1)
+
+
+N, M = map(int, input().split())
+connected = [[] for _ in range(N)]
+for _ in range(M):
+    aa, bb, cc, dd = map(int, input().split())
+    connected[aa].append((bb, cc, dd))
+    connected[bb].append((aa, cc, dd))
+dijkstra()
+"""
