@@ -47,12 +47,7 @@ def dijkstra():
             visited[nex][next_kaka] = next_bebe
             heappush(queue, (next_kaka * next_bebe, nex, next_kaka, next_bebe))
 
-    answer = 1001 ** 2
-    for kaka, bebe in enumerate(visited[-1]):
-        if not kaka or bebe == 1001:
-            continue
-        answer = min(answer, kaka * bebe)
-    print(answer if answer != 1001 ** 2 else -1)
+    print(-1)
 
 
 N, M = map(int, input().split())
