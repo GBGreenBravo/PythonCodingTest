@@ -50,8 +50,6 @@ def move_robots():
 
 
 def clean():
-    clean_sum = 0
-
     for ii in range(K):
         y, x = robots[ii]
         near = [0] * 5
@@ -70,8 +68,6 @@ def clean():
         ry, rx = y + direction[r][0], x + direction[r][1]
         if not(oob(ry, rx)) and area[ry][rx] != -1:
             area[ry][rx] += near[r]
-
-    return clean_sum
 
 
 def add_dust():
