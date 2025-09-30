@@ -92,6 +92,7 @@ def check_fall():
         for x in range(N):
             if area[y][x] in checked:
                 continue
+            checked.add(area[y][x])
             fall(area[y][x])
 
 
